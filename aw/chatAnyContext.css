@@ -1,0 +1,37 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* 确保子元素（ul）占满整个容器宽度 */
+}
+
+.chat-container ul {
+  list-style: none; /* 移除默认的列表样式 */
+  padding: 0; /* 移除默认的内边距 */
+  display: flex;
+  flex-direction: column; /* 使消息在垂直方向上排列 */
+  gap: 10px; /* 在消息之间添加一些间隔 */
+}
+
+/* 基础消息样式 */
+.message {
+  padding: 8px 12px;
+  margin: 4px 0;
+  border-radius: 8px;
+  max-width: 80%;
+}
+
+/* 用户消息样式 */
+.user-message {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border: 1px solid #badbcc;
+  align-self: flex-end;
+}
+
+/* AI消息样式 */
+.ai-message {
+  background-color: #cce5ff; /* 更改为淡蓝色背景 */
+  color: #0056b3; /* 保持深蓝色文字 */
+  border: 1px solid #b8daff; /* 更改为淡蓝色边框 */
+  align-self: flex-start;
+}

@@ -1,0 +1,39 @@
+.menu-container {
+  position: absolute;
+  display: inline-block;
+  right: -10px;
+  bottom: -10px;
+  z-index: 10;
+}
+
+.menu-toggle {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.menu-items {
+  display: flex;
+  gap: 20px;
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  transform: translateX(-100%);
+  opacity: 0;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
+  border: 1px solid #ccc; /* 添加细线边框 */
+  border-radius: 16px; /* 添加圆角 */
+  padding: 8px 10px; /* 添加内边距 */
+  background-color: #fff; /* 添加背景色 */
+}
+
+.menu-item {
+  cursor: pointer; /* 设置光标为指针，表示可点击 */
+  transition: color 0.3s ease;
+}
+
+.menu-container:hover .menu-items {
+  transform: translateX(0);
+  opacity: 1;
+}
