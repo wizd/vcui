@@ -22,15 +22,19 @@ export default function ChatWithLongText({
   const [chunks, setChunks] = useState<string[]>([])
 
   useEffect(() => {
-    const texts = SplitTextByTokenCountPreserveSentences(
-      text,
-      splitByTokenCount
-    )
-    console.log(
-      `split long text with ${CountTokens(text)} tokens into ${texts.length} chunks`
-    )
-    setChunks(texts)
-  }, []) // 空数组作为依赖项，确保只在组件装载时调用一次
+    const splitText = async () => {
+      const texts = await SplitTextByTokenCountPreserveSentences(
+        text,
+        splitByTokenCount
+      )
+      console.log(
+        `split long text with ${await CountTokens(text)} tokens into ${texts.length} chunks`
+      )
+      setChunks(texts)
+    }
+
+    splitText()
+  }, [text, splitByTokenCount]) // 添加依赖项，确保在 text 或 splitByTokenCount 变化时调用
 
   return (
     <>
@@ -45,5 +49,3 @@ export default function ChatWithLongText({
     </>
   )
 }
-
-//style={{ display: 'none' }}
