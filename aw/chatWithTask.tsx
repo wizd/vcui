@@ -18,7 +18,7 @@ type ChatWithTaskProps = {
   onExpand?: () => void
 }
 
-export default async function ChatWithTask({
+export default function ChatWithTask({
   prompt,
   text,
   showMenu = true,
@@ -33,10 +33,10 @@ export default async function ChatWithTask({
       ? prompt.replace('{context}', text)
       : prompt +
         '\n\n' +
-        (await CutTextToTokenCount(
+        CutTextToTokenCount(
           text,
-          await CalculateInputTokenLimitForGenericInference(prompt, text, 2048)
-        )),
+          CalculateInputTokenLimitForGenericInference(prompt, text, 2048)
+        ),
     onFinish: msg => {
       setHasFinished(true)
       if (onFinish) {

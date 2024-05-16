@@ -22,13 +22,13 @@ export default function ChatWithLongText({
   const [chunks, setChunks] = useState<string[]>([])
 
   useEffect(() => {
-    const splitText = async () => {
-      const texts = await SplitTextByTokenCountPreserveSentences(
+    const splitText = () => {
+      const texts = SplitTextByTokenCountPreserveSentences(
         text,
         splitByTokenCount
       )
       console.log(
-        `split long text with ${await CountTokens(text)} tokens into ${texts.length} chunks`
+        `split long text with ${CountTokens(text)} tokens into ${texts.length} chunks`
       )
       setChunks(texts)
     }
