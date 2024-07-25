@@ -21,7 +21,8 @@ export default function GenAnywhereTranslator({ text, to }: { text: string, to: 
 
   useEffect(() => {
     const generateText = async () => {
-      const { output } = await generate(prompt.replace('{{text}}', text).replace('{{to}}', to));
+      const cleanedText = text.replace(/<[^>]*>/g, '');
+      const { output } = await generate(prompt.replace('{{text}}', cleanedText).replace('{{to}}', to));
 
       for await (const delta of readStreamableValue(output)) {
         setGeneration(currentGeneration => `${currentGeneration}${delta}`);
