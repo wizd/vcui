@@ -10,7 +10,7 @@ export async function generate(input: string) {
   (async () => {
     
     const openai = createOpenAI({
-        baseURL: 'http://192.168.3.56:5011/v1',
+        baseURL: 'http://192.168.3.80:5010/v1',
         apiKey: 'aaa'
     });
 
