@@ -8,10 +8,9 @@ import { readStreamableValue } from 'ai/rsc';
 export const maxDuration = 30;
 
 const system = 'You are a professional, authentic machine translation engine.';
-const prompt = `Translate the following source text to {{to}}, Output translation directly without any additional text.
-Source Text: {{text}}
+const prompt = `Translate the following text delimited by 3 backticks to {{to}}, Output translation directly without any additional text, don't wrap the output with any backticks.
 
-Translated Text:
+\`\`\`{{text}}\`\`\`
 
 `;
 
