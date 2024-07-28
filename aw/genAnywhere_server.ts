@@ -4,27 +4,27 @@ import { streamText } from 'ai';
 import { createOpenAI } from '@ai-sdk/openai';
 import { createStreamableValue } from 'ai/rsc';
 
-export async function generate(input: string) {
-  const stream = createStreamableValue('');
+export async function generate(input: string, system?: string) {
+  const stream = createStreamableValue('')
 
-  (async () => {
-    
+  ;(async () => {
     const openai = createOpenAI({
-        baseURL: 'http://192.168.3.80:5010/v1',
-        apiKey: 'aaa'
-    });
+      baseURL: process.env.NEXT_PUBLIC_DEFAULT_MODEL_API_BASEURL,
+      apiKey: process.env.NEXT_PUBLIC_DEFAULT_MODEL_API_KEY
+    })
 
     const { textStream } = await streamText({
       model: openai('gpt-4'),
-      prompt: input,
-    });
+      system: system,
+      prompt: input
+    })
 
     for await (const delta of textStream) {
-      stream.update(delta);
+      stream.update(delta)
     }
 
-    stream.done();
-  })();
+    stream.done()
+  })()
 
-  return { output: stream.value };
+  return { output: stream.value }
 }

@@ -7,6 +7,7 @@ import { readStreamableValue } from 'ai/rsc';
 // 允许流式响应最多30秒
 export const maxDuration = 30;
 
+const system = 'You are a professional, authentic machine translation engine.';
 const prompt = `Translate the following source text to {{to}}, Output translation directly without any additional text.
 Source Text: {{text}}
 
@@ -20,7 +21,7 @@ export default function GenAnywhereTranslator({ text, to }: { text: string, to: 
   useEffect(() => {
     const generateText = async () => {
       const cleanedText = text.replace(/<[^>]*>/g, '');
-      const { output } = await generate(prompt.replace('{{text}}', cleanedText).replace('{{to}}', to));
+      const { output } = await generate(prompt.replace('{{text}}', cleanedText).replace('{{to}}', to), system);
 
       for await (const delta of readStreamableValue(output)) {
         setGeneration(currentGeneration => `${currentGeneration}${delta}`);
