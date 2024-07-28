@@ -7,12 +7,10 @@ import { readStreamableValue } from 'ai/rsc';
 // 允许流式响应最多30秒
 export const maxDuration = 30;
 
-const prompt = `You are a professional, authentic machine translation engine.
-Translate the following source text to {{to}}, Output translation directly without any additional text.
+const prompt = `Translate the following source text to {{to}}, Output translation directly without any additional text.
+Source Text: {{text}}
 
-<source>
-{{text}}
-</source>
+Translated Text:
 
 `;
 
