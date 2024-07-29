@@ -40,6 +40,7 @@ function processText(text: string): string {
 export default function GenAnywhereSummary({ text }: { text: string }) {
   const [generation, setGeneration] = useState<string>('');
   const [isVisible, setIsVisible] = useState(false);
+  const [hasGenerated, setHasGenerated] = useState(false);
   const componentRef = useRef(null);
 
   useEffect(() => {
@@ -62,7 +63,7 @@ export default function GenAnywhereSummary({ text }: { text: string }) {
   }, []);
 
   useEffect(() => {
-    if (isVisible) {
+    if (isVisible && !hasGenerated) {
       const generateText = async () => {
         const cleanedText = text.replace(/<[^>]*>/g, '');
         const { output } = await generate(prompt.replace('{{text}}', cleanedText), system);
@@ -72,11 +73,12 @@ export default function GenAnywhereSummary({ text }: { text: string }) {
           fullGeneration += delta;
           setGeneration(processText(fullGeneration.replace(/`/g, '')));
         }
+        setHasGenerated(true);
       };
 
       generateText();
     }
-  }, [isVisible, text]);
+  }, [isVisible, text, hasGenerated]);
 
   return (
     <div ref={componentRef}>
