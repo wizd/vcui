@@ -31,6 +31,6 @@ export default function GenAnywhereTranslator({ text, to }: { text: string, to: 
   }, [text, to]);
 
   return (
-    <div>{generation}</div>
+    <div>{generation?.replace(/`/g, '')}</div>
   );
 }
