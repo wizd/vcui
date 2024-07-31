@@ -9,10 +9,11 @@ import { MemoizedReactMarkdown } from '@/components/markdown';
 export const maxDuration = 30;
 
 const system = 'You are a professional, authentic email reader and intelligent collector.';
-const prompt = `Text bellow delimited by 3 backticks is an email thread, respect the email rules and format, summary only the latest reply. Output in Chinese without any additional text.
+const prompt = `Text bellow delimited by 4 backticks is an email thread, respect the email rules and format, summary only the latest reply.
 
-\`\`\`{{text}}\`\`\`
+\`\`\`\`{{text}}\`\`\`\`
 
+总是输出中文总结。
 `;
 
 function shortenUrl(url: string, maxLength: number = 30): string {
