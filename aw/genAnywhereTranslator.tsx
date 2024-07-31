@@ -16,21 +16,25 @@ const prompt = `Translate the following text delimited by 3 backticks to {{to}},
 
 export default function GenAnywhereTranslator({ text, to }: { text: string, to: string }) {
   const [generation, setGeneration] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const generateText = async () => {
+      setIsLoading(true);
+      setGeneration('');
       const cleanedText = text.replace(/<[^>]*>/g, '');
       const { output } = await generate(prompt.replace('{{text}}', cleanedText).replace('{{to}}', to), system);
 
       for await (const delta of readStreamableValue(output)) {
         setGeneration(currentGeneration => `${currentGeneration}${delta}`);
       }
+      setIsLoading(false);
     };
 
     generateText();
   }, [text, to]);
 
   return (
-    <div>{generation?.replace(/`/g, '')}</div>
+    <div>{isLoading ? '翻译中...' : generation?.replace(/`/g, '')}</div>
   );
 }
