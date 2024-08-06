@@ -14,7 +14,7 @@ export async function generate(input: string, system?: string) {
     })
 
     const { textStream } = await streamText({
-      model: openai('gpt-4'),
+      model: openai(process.env.NEXT_PUBLIC_DEFAULT_MODEL_NAME!),
       system: system,
       prompt: input
     })
