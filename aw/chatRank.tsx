@@ -3,7 +3,7 @@
 import { Box, HStack, Text, VStack } from '@chakra-ui/react';
 import React, { useState } from 'react';
 
-import ChatWithTask from './chatWithTask';
+import ChatWithTask from '../../components/aw/chatWithTask';
 
 const ChatRank = ({
   text,
