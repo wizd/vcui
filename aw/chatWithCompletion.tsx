@@ -1,18 +1,19 @@
-'use client'
+'use client';
 
-import { useCompletion } from 'ai/react'
+import { useCompletion } from 'ai/react';
 
 export default function ChatWithCompletion({ ctxStr = '' }) {
+  console.log('in chatWithCompletion, ctxStr is: ', ctxStr);
   const {
     completion,
     input,
     stop,
     isLoading,
     handleInputChange,
-    handleSubmit
+    handleSubmit,
   } = useCompletion({
-    api: '/api/completion'
-  })
+    api: '/api/completion',
+  });
 
   return (
     <div>
@@ -31,5 +32,5 @@ export default function ChatWithCompletion({ ctxStr = '' }) {
         </button>
       </form>
     </div>
-  )
+  );
 }

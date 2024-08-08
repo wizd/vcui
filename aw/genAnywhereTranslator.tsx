@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { generate } from './genAnywhere_server';
 import { readStreamableValue } from 'ai/rsc';
+import { useEffect, useState } from 'react';
+
+import { generate } from './genAnywhere_server';
 
 // 允许流式响应最多30秒
 export const maxDuration = 30;
@@ -14,7 +15,13 @@ const prompt = `Translate the following text delimited by 3 backticks to {{to}},
 
 `;
 
-export default function GenAnywhereTranslator({ text, to }: { text: string, to: string }) {
+export default function GenAnywhereTranslator({
+  text,
+  to,
+}: {
+  text: string;
+  to: string;
+}) {
   const [generation, setGeneration] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -23,10 +30,13 @@ export default function GenAnywhereTranslator({ text, to }: { text: string, to: 
       setIsLoading(true);
       setGeneration('');
       const cleanedText = text.replace(/<[^>]*>/g, '');
-      const { output } = await generate(prompt.replace('{{text}}', cleanedText).replace('{{to}}', to), system);
+      const { output } = await generate(
+        prompt.replace('{{text}}', cleanedText).replace('{{to}}', to),
+        system,
+      );
 
       for await (const delta of readStreamableValue(output)) {
-        setGeneration(currentGeneration => `${currentGeneration}${delta}`);
+        setGeneration((currentGeneration) => `${currentGeneration}${delta}`);
       }
       setIsLoading(false);
     };
@@ -34,7 +44,5 @@ export default function GenAnywhereTranslator({ text, to }: { text: string, to: 
     generateText();
   }, [text, to]);
 
-  return (
-    <div>{isLoading ? '翻译中...' : generation?.replace(/`/g, '')}</div>
-  );
+  return <div>{isLoading ? '翻译中...' : generation?.replace(/`/g, '')}</div>;
 }
