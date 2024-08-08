@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { generate } from './genAnywhere_server';
 import { readStreamableValue } from 'ai/rsc';
 
@@ -18,23 +18,38 @@ export default function GenAnywhereTranslator({ text, to }: { text: string, to: 
   const [generation, setGeneration] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
 
+  const storageKey = useMemo(() => `translation_${text}_${to}`, [text, to]);
+
   useEffect(() => {
+    const storedTranslation = localStorage.getItem(storageKey);
+
     const generateText = async () => {
+      if (storedTranslation) {
+        setGeneration(storedTranslation);
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(true);
       setGeneration('');
       const cleanedText = text.replace(/<[^>]*>/g, '');
       const { output } = await generate(prompt.replace('{{text}}', cleanedText).replace('{{to}}', to), system);
 
+      let fullTranslation = '';
       for await (const delta of readStreamableValue(output)) {
+        fullTranslation += delta;
         setGeneration(currentGeneration => `${currentGeneration}${delta}`);
       }
+      localStorage.setItem(storageKey, fullTranslation);
       setIsLoading(false);
     };
 
     generateText();
-  }, [text, to]);
+  }, [storageKey]);
 
-  return (
-    <div>{isLoading ? '翻译中...' : generation?.replace(/`/g, '')}</div>
-  );
+  const memoizedGeneration = useMemo(() => {
+    return isLoading ? '翻译中...' : generation?.replace(/`/g, '');
+  }, [isLoading, generation]);
+
+  return <div>{memoizedGeneration}</div>;
 }
