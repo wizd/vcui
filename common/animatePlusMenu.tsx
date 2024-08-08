@@ -31,13 +31,14 @@ const AnimatedPlusMenu = ({
 
   return (
     <div className="menu-container">
-      <div
+      <button
+        type="button"
         className="menu-toggle"
         onClick={toggleMenu}
-        title={isOpen ? '关闭菜单' : '打开菜单'}
+        aria-label={isOpen ? '关闭菜单' : '打开菜单'}
       >
         {isOpen ? <BsXCircle /> : <BsPlusCircle />}
-      </div>
+      </button>
       {isOpen && (
         <div className="menu-items">
           {onLike && (
