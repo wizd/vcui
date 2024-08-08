@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import { useChat } from 'ai/react'
+import { useChat } from 'ai/react';
 
 export default function ChatAnywhere() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat()
+  const { messages, input, handleInputChange, handleSubmit } = useChat();
 
   return (
     <div>
       <ul>
-        {messages.map((m, index) => (
-          <li key={index}>
+        {messages.map((m) => (
+          <li key={m.id}>
             {m.role === 'user' ? 'User: ' : 'AI: '}
             {m.content}
           </li>
@@ -17,16 +17,16 @@ export default function ChatAnywhere() {
       </ul>
 
       <form onSubmit={handleSubmit}>
-        <label>
-          <input
-            placeholder="Say something..."
-            style={{ width: '80ch' }}
-            value={input}
-            onChange={handleInputChange}
-          />
-        </label>
+        <input
+          id="message"
+          name="message"
+          placeholder="Say something..."
+          style={{ width: '80ch' }}
+          value={input}
+          onChange={handleInputChange}
+        />
         <button type="submit">对话</button>
       </form>
     </div>
-  )
+  );
 }

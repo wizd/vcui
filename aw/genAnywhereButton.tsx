@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
-import { generate } from './genAnywhere_server';
 import { readStreamableValue } from 'ai/rsc';
+import { useState } from 'react';
+
 import { MemoizedReactMarkdown } from '@/components/markdown';
+
+import { generate } from './genAnywhere_server';
 
 // 允许流式响应最多30秒
 export const maxDuration = 30;
@@ -23,10 +25,10 @@ function shortenUrl(url: string, maxLength: number = 30): string {
   let domain = url.replace(/^https?:\/\//, '').split('/')[0];
   let path = url.slice(protocol.length + domain.length);
   if (domain.length + 5 > maxLength) {
-    domain = domain.slice(0, maxLength - 8) + '...';
+    domain = `${domain.slice(0, maxLength - 8)}...`;
   }
   if (domain.length + path.length + 5 > maxLength) {
-    path = path.slice(0, maxLength - domain.length - 8) + '...';
+    path = `${path.slice(0, maxLength - domain.length - 8)}...`;
   }
   return protocol + domain + path;
 }
@@ -39,14 +41,23 @@ function processText(text: string): string {
   });
 }
 
-export default function GenAnywhereButton({ text, buttonText }: { text: string, buttonText: string }) {
+export default function GenAnywhereButton({
+  text,
+  buttonText,
+}: {
+  text: string;
+  buttonText: string;
+}) {
   const [generation, setGeneration] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
 
   const handleGenerate = async () => {
     setIsGenerating(true);
     const cleanedText = text.replace(/<[^>]*>/g, '');
-    const { output } = await generate(prompt.replace('{{text}}', cleanedText), system);
+    const { output } = await generate(
+      prompt.replace('{{text}}', cleanedText),
+      system,
+    );
     let fullGeneration = '';
     for await (const delta of readStreamableValue(output)) {
       fullGeneration += delta;
@@ -57,17 +68,15 @@ export default function GenAnywhereButton({ text, buttonText }: { text: string, 
 
   return (
     <div>
-      <button 
-        onClick={handleGenerate} 
+      <button
+        onClick={handleGenerate}
         disabled={isGenerating}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+        className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 disabled:bg-gray-400"
       >
         {isGenerating ? '生成中...' : buttonText}
       </button>
       {generation && (
-        <MemoizedReactMarkdown
-          className="prose dark:prose-invert custom-markdown-light mt-4"
-        >
+        <MemoizedReactMarkdown className="prose dark:prose-invert custom-markdown-light mt-4">
           {generation}
         </MemoizedReactMarkdown>
       )}

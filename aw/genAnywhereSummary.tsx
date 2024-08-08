@@ -1,14 +1,17 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { generate } from './genAnywhere_server';
 import { readStreamableValue } from 'ai/rsc';
+import { useEffect, useRef, useState } from 'react';
+
 import { MemoizedReactMarkdown } from '@/components/markdown';
+
+import { generate } from './genAnywhere_server';
 
 // 允许流式响应最多30秒
 export const maxDuration = 30;
 
-const system = 'You are a professional, authentic email reader and intelligent collector.';
+const system =
+  'You are a professional, authentic email reader and intelligent collector.';
 const prompt = `Text bellow delimited by 4 backticks is an email thread, respect the email rules and format, summary only the latest reply.
 
 \`\`\`\`{{text}}\`\`\`\`
@@ -22,10 +25,10 @@ function shortenUrl(url: string, maxLength: number = 30): string {
   let domain = url.replace(/^https?:\/\//, '').split('/')[0];
   let path = url.slice(protocol.length + domain.length);
   if (domain.length + 5 > maxLength) {
-    domain = domain.slice(0, maxLength - 8) + '...';
+    domain = `${domain.slice(0, maxLength - 8)}...`;
   }
   if (domain.length + path.length + 5 > maxLength) {
-    path = path.slice(0, maxLength - domain.length - 8) + '...';
+    path = `${path.slice(0, maxLength - domain.length - 8)}...`;
   }
   return protocol + domain + path;
 }
@@ -49,7 +52,7 @@ export default function GenAnywhereSummary({ text }: { text: string }) {
       ([entry]) => {
         setIsVisible(entry.isIntersecting);
       },
-      { threshold: 0.1 } // 当10%的组件可见时触发
+      { threshold: 0.1 }, // 当10%的组件可见时触发
     );
 
     if (componentRef.current) {
@@ -67,7 +70,10 @@ export default function GenAnywhereSummary({ text }: { text: string }) {
     if (isVisible && !hasGenerated) {
       const generateText = async () => {
         const cleanedText = text.replace(/<[^>]*>/g, '');
-        const { output } = await generate(prompt.replace('{{text}}', cleanedText), system);
+        const { output } = await generate(
+          prompt.replace('{{text}}', cleanedText),
+          system,
+        );
 
         let fullGeneration = '';
         for await (const delta of readStreamableValue(output)) {
@@ -83,9 +89,7 @@ export default function GenAnywhereSummary({ text }: { text: string }) {
 
   return (
     <div ref={componentRef}>
-      <MemoizedReactMarkdown
-        className="prose dark:prose-invert custom-markdown-light"
-      >
+      <MemoizedReactMarkdown className="prose dark:prose-invert custom-markdown-light">
         {generation}
       </MemoizedReactMarkdown>
     </div>

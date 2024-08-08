@@ -1,32 +1,33 @@
-import React, { useState } from 'react'
+import './animatePlusMenu.css'; // 引入CSS文件
+
+import React, { useState } from 'react';
 import {
   BsArrowRepeat,
+  BsHandThumbsDown,
+  BsHeart,
   BsPlusCircle,
   BsXCircle,
-  BsHeart,
-  BsHandThumbsDown
-} from 'react-icons/bs'
-import { MdExpand } from 'react-icons/md'
-import './animatePlusMenu.css' // 引入CSS文件
+} from 'react-icons/bs';
+import { MdExpand } from 'react-icons/md';
 
 interface AnimatedPlusMenuProps {
-  onRefresh?: () => void // onRefresh 是一个可选的函数参数
-  onLike?: () => void
-  onDislike?: () => void
-  onExpand?: () => void
+  onRefresh?: () => void; // onRefresh 是一个可选的函数参数
+  onLike?: () => void;
+  onDislike?: () => void;
+  onExpand?: () => void;
 }
 
 const AnimatedPlusMenu = ({
   onRefresh,
   onLike,
   onDislike,
-  onExpand
+  onExpand,
 }: AnimatedPlusMenuProps) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   return (
     <div className="menu-container">
@@ -68,7 +69,7 @@ const AnimatedPlusMenu = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default AnimatedPlusMenu
+export default AnimatedPlusMenu;

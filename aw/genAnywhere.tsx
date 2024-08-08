@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { generate } from './genAnywhere_server';
 import { readStreamableValue } from 'ai/rsc';
+import { useEffect, useState } from 'react';
+
+import { generate } from './genAnywhere_server';
 
 export const maxDuration = 30;
 
@@ -19,7 +20,7 @@ export default function GenAnywhere({ text }: { text: string }) {
         fullGeneration += delta;
         setGeneration(fullGeneration);
       }
-      setDebugInfo(prevInfo => `${prevInfo}\n最终翻译: ${fullGeneration}`);
+      setDebugInfo((prevInfo) => `${prevInfo}\n最终翻译: ${fullGeneration}`);
     };
 
     generateText();
