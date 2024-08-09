@@ -2,8 +2,10 @@
 
 import { useChat } from 'ai/react';
 
-export default function ChatAnywhere() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+export default function ChatAnywhere(props: { apiBase?: string }) {
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    api: props.apiBase,
+  });
 
   return (
     <div>
