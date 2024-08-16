@@ -14,10 +14,11 @@ export async function generate(input: string, system?: string) {
     });
 
     const { textStream } = await streamText({
-      model: openai(process.env.NEXT_PUBLIC_DEFAULT_MODEL_NAME!),
+      model: openai(process.env.NEXT_PUBLIC_DEFAULT_MODEL_NAME || 'gpt-4'),
       system,
       prompt: input,
-    });
+      maxTokens: 2048
+    })
 
     for await (const delta of textStream) {
       stream.update(delta);
